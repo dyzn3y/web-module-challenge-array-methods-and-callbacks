@@ -1,4 +1,4 @@
-const { fifaData } = require('./fifa.js')
+const { fifaData } = require('./fifa.js');
 
 // ⚽️ M  V P ⚽️ //
 
@@ -35,7 +35,6 @@ function getFinals(array) {
     })
     return allFinals;
  }
-console.log(getFinals(fifaData));
 
 
 /* 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀 Task 3: 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀
@@ -47,7 +46,6 @@ Use the higher-order function called getYears to do the following:
 function getYears(array, getFinalsCB) {
     return getFinalsCB(array).map(item =>item.Year);
 }
-console.log(getYears(fifaData, getFinals))
 
 
 /* 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀 Task 4: 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀
@@ -113,11 +111,59 @@ Create a function called `getCountryWins` that takes the parameters `data` and `
 Hint: Investigate your data to find "team initials"!
 Hint: use `.reduce` */
 
-function getCountryWins(/* code here */) {
+function getCountryWins(data, teamInitials) {
+    const finals = getFinals(data)
+    const winners = getWinners(data, getFinals)
+    const homeTeam = [] 
+    const awayTeam = []
+    finals.forEach(element => {
+        element === winners
+        homeTeam.push(element)
+    });
+    finals.forEach(element => {
+        element === winners
+        awayTeam.push(element)
+    })
+    const homeTeamInitials = homeTeam.filter(item => item['Home Team Initials'] === teamInitials)
+    const awayTeamInitials = awayTeam.filter(item => item['Away Team Initials'] === teamInitials)
+    const homeTie = homeTeamInitials.filter(item => item['Win conditions'])
+    const awayTie = awayTeamInitials.filter(item => item['Win conditions'])
+    let awayTeamWins = awayTeamInitials.reduce(function(acc, item) {
+        
+        if (item['Away Team Goals'] > item['Home Team Goals']) {
+            acc++
+        }
+        return acc
+    }, 0)
 
-    /* code here */
+    let homeTeamWins = homeTeamInitials.reduce(function(acc, item) {
+        if (item['Home Team Goals'] > item['Away Team Goals']) {
+            acc++
+        }
+        return acc
+    }, 0)
+    let comparisonString;
+    if (homeTie) {
+        homeTie.forEach(element => {
+            comparisonString = element['Win conditions'].split('').splice(0, 3).join('').toUpperCase()
+            if (comparisonString === teamInitials) {
+                homeTeamWins++
+            }
 
+        })
+    } if (awayTie) {
+        awayTie.forEach(element => {
+            comparisonString = element['Win conditions'].split('').splice(0, 3).join('').toUpperCase()
+            if (comparisonString === teamInitials) {
+                awayTeamWins++
+            }
+
+        })
+    }
+
+    return awayTeamWins + homeTeamWins
 }
+console.log('Stretch 1: ', getCountryWins(fifaData, 'ITA'));
 
 
 
