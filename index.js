@@ -197,12 +197,66 @@ console.log('Stretch 2: ', getGoals(fifaData));
 /* 💪💪💪💪💪 Stretch 3: 💪💪💪💪💪
 Write a function called badDefense() that accepts a parameter `data` and calculates the team with the most goals scored against them per appearance (average goals against) in the World Cup finals */
 
-function badDefense(/* code here */) {
-
-    /* code here */
-
+function badDefense(data) {
+    const finals = getFinals(data)
+    const scoreDifferenceHomeTeamArray = finals.map(item => {
+        let score = item['Home Team Goals'] - item['Away Team Goals']
+        let teamName = item['Home Team Name']
+        return {teamName: teamName, score: score}
+    })
+    const scoreDifferenceHomeTeam = scoreDifferenceHomeTeamArray.sort((a, b) => a.score - b.score)
+    const scoreDifferenceAwayTeamArray = finals.map(item => {
+        let score = item['Away Team Goals'] - item['Home Team Goals']
+        let teamName = item['Away Team Name']
+        return {teamName: teamName, score: score}
+    })
+    const scoreDifferenceAwayTeam = scoreDifferenceAwayTeamArray.sort((a, b) => a.score - b.score)
+    const badScoreHomeIndex = scoreDifferenceHomeTeam.length-1
+    const badScoreAwayIndex = scoreDifferenceAwayTeam.length-1
+    const badScoreHome = scoreDifferenceHomeTeamArray[badScoreHomeIndex].score
+    const badScoreAway = scoreDifferenceAwayTeamArray[badScoreAwayIndex].score
+    const badTeamArray = [];
+    let badTeam
+    if (badScoreHome === badScoreAway) {
+        scoreDifferenceAwayTeam.filter(item => {
+            if (item.score === badScoreAway)
+                if (badTeamArray.includes(item.teamName) === false)
+                    badTeamArray.push(item.teamName)
+                else
+                badTeam = item.teamName
+        })
+        scoreDifferenceHomeTeam.filter(item => {
+            if(item.score === badScoreHome)
+                if (badTeamArray.includes(item.teamName) === false)
+                    badTeamArray.push(item.teamName)
+                else
+                badTeam = item.teamName
+        })
+    } else if (badScoreHome > badScoreAway) {
+        scoreDifferenceHomeTeam.filter(item => {
+            if(item.score === badScoreHome)
+                if (badTeamArray.includes(item.teamName) === false)
+                    badTeamArray.push(item.teamName)
+                else
+                badTeam = item.teamName
+        })
+    } else if (badScoreAway > badScoreHome) {
+        scoreDifferenceAwayTeam.filter(item => {
+            if (item.score === badScoreAway)
+                if (badTeamArray.includes(item.teamName) === false)
+                    badTeamArray.push(item.teamName)
+                else
+                    badTeam = item.teamName
+        })
+    }
+    if (badTeam) {
+        return badTeam
+    } else {
+        return badTeamArray;
+    }
 }
 
+console.log('Stretch 3: ', badDefense(fifaData));
 
 /* If you still have time, use the space below to work on any stretch goals of your chosing as listed in the README file. */
 
