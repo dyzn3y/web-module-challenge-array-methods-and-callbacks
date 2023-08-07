@@ -170,11 +170,28 @@ console.log('Stretch 1: ', getCountryWins(fifaData, 'ITA'));
 /* 💪💪💪💪💪 Stretch 2: 💪💪💪💪💪 
 Write a function called getGoals() that accepts a parameter `data` and returns the team with the most goals score per appearance (average goals for) in the World Cup finals */
 
-function getGoals(/* code here */) {
-
-    /* code here */
-
+function getGoals(data) {
+    const finals = getFinals(data);
+    const resultArray = [];
+    finals.forEach(item => {
+        resultArray.push(item['Home Team Goals'])
+        resultArray.push(item['Away Team Goals'])
+    })
+    const highestScoreIndex = resultArray.sort().length-1
+    const highestScore = resultArray[highestScoreIndex];
+    const result = finals.map(item => {
+        if (item['Home Team Goals'] === highestScore) {
+            return item['Home Team Name']
+        } else if (item['Away Team Goals'] === highestScore) {
+            return item['Away Team Name']
+        }
+    })
+    function greatestScore (value) {
+        return value !== undefined
+    }
+    return result.filter(greatestScore)[0]
 }
+console.log('Stretch 2: ', getGoals(fifaData));
 
 
 /* 💪💪💪💪💪 Stretch 3: 💪💪💪💪💪
