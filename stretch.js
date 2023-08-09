@@ -30,3 +30,23 @@ const finalsTie = (data) => {
 }
 
 console.log('Stretch 2: ', finalsTie(fifaData));
+
+function totalGoals (initials) {
+    const filteredData = fifaData.filter(item => {
+        if (item['Home Team Initials'] === initials) {
+            return item
+        } if (item['Away Team Initials'] === initials) {
+            return item
+        }
+    })
+    const result = filteredData.reduce((acc, item) => {
+        if (item['Home Team Initials'] === initials) {
+            return acc + item['Home Team Goals']
+        } if (item['Away Team Initials'] === initials) {
+            return acc + item['Away Team Goals']
+        }
+    }, 0)
+    return result;
+}
+
+console.log('Stretch 3: ', totalGoals('BRA'));
