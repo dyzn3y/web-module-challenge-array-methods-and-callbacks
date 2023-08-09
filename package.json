@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",
+    "startStretch": "nodemon headers.js",
     "test": "jest --watchAll --verbose --forceExit --silent"
   },
   "repository": {
